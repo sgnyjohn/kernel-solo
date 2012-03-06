@@ -1,0 +1,7 @@
+git add grub.cfg
+
+git commit -m '3 commit'
+
+git push -u origin master
+
+
