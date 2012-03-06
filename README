@@ -1,0 +1,34 @@
+O projeto surgiu da necessidade de testar distribuições
+linux em portátil sem cd ou dvd.
+
+A evolução dos sistemas de arquivo aufs / squashfs 
+permite rodar distribuições live e manter uma percistencia em
+um diretório, criando assim um sistema usável e de rápida instalação. 
+
+tópicos
+- teste de distribuiçoes;
+- kernel linux independente de distribuição;
+- instalação rápida;
+- atualização em grande escala facilitada;
+- ...
+
+
+parametros do init:
+rootLabel = label da particao onde se encontra os arq squashfs e diretorio persistencia
+rootPath = caminho relativo dentro da partição acima
+root = diretorios e/ou arquivos que serão montados como root separados por ,. o primeira
+   opcao deve RW (listados na ordem original aufs).
+
+exemplo de grub
+
+menuentry 'kahel deb64' {
+  #root=(hd0,msdos11)
+  linux /boot/deb64/vmlinuz rootLabel=ptbancFs3 rootPath=kahel root=rw,disco.sfs
+  initrd /boot/deb64/initrdsj.gz
+}
+
+menuentry 'bodhi' {
+  #root=(hd0,msdos11)
+  linux /boot/bodhi/vmlinuz rootLabel=ptbancFs3 rootPath=bodhi root=rw,casper/filesystem.squashfs chr=/bin/run-init
+  initrd /boot/bodhi/initrdsj.gz   
+}
