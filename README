@@ -1,3 +1,5 @@
+script initrd
+
 O projeto surgiu da necessidade de testar distribuições
 linux em portátil sem cd ou dvd.
 
