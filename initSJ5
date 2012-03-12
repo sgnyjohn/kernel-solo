@@ -1,4 +1,25 @@
 #!/bin/sh
+
+###########################################################################
+#
+#    Copyright (c) 2011/2012 Signey John
+#    
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#    
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#    
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    
+###########################################################################
+
+
 # 4 aceita mountLabel - montando tudo em /mnt/
 # faz e2fsck de particoes ext? ...
 
@@ -27,7 +48,7 @@ mkDir() {
 Fsck() {
  if [ ".$(blkid | grep ${1} | grep 'TYPE=\"ext')" != "." ]; then
   log "e2fsck /dev/disk/by-label/${1} .... " 2
-  /sbin/e2fsck "/dev/disk/by-label/${1}"
+  /sbin/e2fsck -p -v "/dev/disk/by-label/${1}"
  fi
 }
 #######################################
@@ -299,25 +320,4 @@ exit
 #exec /bin/busybox chroot /root /sbin/init 2
 
 
-From switch_root.c:
-
-    // Additional sanity checks: we're about to rm -rf /,  so be REALLY SURE
-    // we mean it.  (I could make this a CONFIG option, but I would get email
-    // from all the people who WILL eat their filesystemss.)
-
-    if (lstat("/init", &st1) || !S_ISREG(st1.st_mode) || statfs("/", &stfs) ||
-        (stfs.f_type != RAMFS_MAGIC && stfs.f_type != TMPFS_MAGIC) ||
-        getpid() != 1)
-    {
-        bb_error_msg_and_die("not rootfs");
-    }
-
-It's checking that you have an /init, and that it's a regular file.  It checks 
-that / is ramfs or tmpfs.  And it checks that you are PID 1.
-
-If any of those is _not_ true, then doing the equivalent of "find / -xdev | 
-rm -f" (which is how switch_root frees up the memory used by rootfs before 
-mounting the new root filesystem on top of it) probably isn't a good idea.
-
-Rob
 
