@@ -1,0 +1,26 @@
+novo disco archlinux
+=======================================
+archlinux-2013.10.01-dual.iso 
+
+amd64
+
+estilo redhat squashfs tem ext4 dentro...
+
+acertar pacman
+
+# pacman-key --init
+# pacman-key --populate archlinux
+
+# GNOME an sich
+pacman -S gnome  gnome-extra
+# Total Download Size:    494.96 MiB
+# Total Installed Size:   2002.67 MiB
+
+
+
+# gimp audacity gparted chromium openjdk skype
+pacman -S --needed base-devel vlc scite qemu openssh openshot \
+	mplayer mencoder iptraf-ng inkscape geany enlightenment17 audacity
+	
+
+

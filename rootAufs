@@ -1,0 +1,81 @@
+#!/usr/bin/ash
+# signey john jun/2012
+# archlinux initramfs hook 
+
+#######################################
+erro() {
+	xxl="$debugr"
+	debugr=y
+	log "$1" 15
+	debugr="$xxl"
+}
+##########################
+# troca str1 str2 str3
+troca() {
+	ret=${1//$2/$3}
+}
+#######################################
+log() {
+	echo "$1"
+	if [ $2 ] && [ $debugs ]; then
+		echo "sleep $2"
+		sleep $2
+	elif [ $2 ] && [ $debugr ]; then
+		echo "enter..."
+		read xent
+		while [ ".$xent" != "." ]; do
+			$xent
+			read xent
+		done
+	fi
+}
+#######################################
+mkDir() {
+ if ! test -e $1 ; then
+  mkdir $1
+ fi
+}
+
+#####################################
+#####################################
+resolve_device() {
+	#echo "resolve_device.."
+	echo "$1"
+}
+#####################################
+#####################################
+fsck_root() {
+	echo "fsck_root..."
+}
+#####################################
+#####################################
+default_mount_handler() {
+	debugs=1
+	echo "default_mount_handler..."
+	
+	echo "################################"
+	echo "espera por LABEL $rootLabel"
+	x="."
+	while ! test -e "/dev/disk/by-label/${rootLabel}"; do
+		echo $x
+		x=".$x"
+		sleep 1
+		#ls /dev/disk/by-label
+	done
+	echo "################################"
+
+	mkDir /mnt
+	mkDir /mnt/sis
+	mount /dev/disk/by-label/${rootLabel}  /mnt/sis
+	ls /mnt/sis
+	log "foi sis, arqs rootPath=$rootPath" 10
+	
+	rdist=/mnt/sis/$rootPath 
+	rdest=$1
+	
+	. /mnt/sis/rootAufs1.sh
+
+}
+
+
+# vim: set ft=sh ts=4 sw=4 et:

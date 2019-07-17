@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#set -e
+
+. /bin/live-boot
+
+. /scripts/functions
+
+mountroot ()
+{
+	# initramfs-tools entry point for live-boot is mountroot(); function
+	Live
+}

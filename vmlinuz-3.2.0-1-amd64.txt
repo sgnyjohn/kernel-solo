@@ -1,0 +1,40 @@
+1 - cat /etc/initramfs-tools/modules
+	# List of modules that you want to include in your initramfs.
+	#
+	# Syntax:  module_name [args ...]
+	#
+	# You must run update-initramfs(8) to effect this change.
+	#
+	# Examples:
+	#
+	# raid1
+	# sd_mod
+	ntfs
+	fuse
+	squashfs
+	aufs
+
+2 - erro: hang mount (-o loop) squashfs...
+
+3 - comparar versao anterior rc7
+	* rc7 foi com ferramentas squeeze/sid?
+	* $ for i in $(find -type f);do if ! test -e ../k/$i; then echo $i;fi;done|grep -v /modules/
+		./lib/udev/usb_id
+		./lib/udev/path_id
+		./lib/klibc-aeXILBJFQJl1AicDzy85rUH7H6w.so
+		./lib/libntfs-3g.so.804
+		./lib/libpopt.so.0
+		./lib/libgpg-error.so.0
+		./initSJ3
+		./etc/modprobe.d/blacklist.conf
+		./scripts/local-bottom/ntfs_3g
+		./scripts/local-premount/ntfs_3g
+		./usr/lib/libfuse.so.2
+		./bin/ntfs-3g
+
+4 - erro: mount squashfs: "can't setup loop device: No space left on device"
+	devo criar os disp /dev/loop ? - copiar do anterior q funciona
+
+
+
+	

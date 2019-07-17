@@ -1,0 +1,26 @@
+
+o arch 64
+ldd /sbin/init
+
+solucao
+antes do chroot mudar LD
+
+export LD_LIBRARY_PATH=/usr/local/vlc/lib:$LD_LIBRARY_PATH
+
+testar no chroot...
+LD_LIBRARY_PATH=r/usr/lib LD_DEBUG=libs chroot r
+
+ LD_DEBUG=libs chroot r
+
+http://sourceware.org/ml/libc-alpha/2012-06/msg00644.html
+
+LD_DEBUG=libs chroot r
+      4809:	find library=libc.so.6 [0]; searching
+      4809:	 search path=/mnt/initrd/sis/arch64/r/usr/lib/tls/x86_64:/mnt/initrd/sis/arch64/r/usr/lib/tls:/mnt/initrd/sis/arch64/r/usr/lib/x86_64:/mnt/initrd/sis/arch64/r/usr/lib		(LD_LIBRARY_PATH)
+      4809:	  trying file=/mnt/initrd/sis/arch64/r/usr/lib/tls/x86_64/libc.so.6
+      4809:	  trying file=/mnt/initrd/sis/arch64/r/usr/lib/tls/libc.so.6
+      4809:	  trying file=/mnt/initrd/sis/arch64/r/usr/lib/x86_64/libc.so.6
+      4809:	  trying file=/mnt/initrd/sis/arch64/r/usr/lib/libc.so.6
+      4809:	
+chroot: error while loading shared libraries: __vdso_gettimeofday: invalid mode for dlopen(): Invalid argument
+

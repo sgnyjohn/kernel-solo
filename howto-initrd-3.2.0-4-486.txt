@@ -1,0 +1,75 @@
+1 - cat /etc/initramfs-tools/modules
+	# List of modules that you want to include in your initramfs.
+	#
+	# Syntax:  module_name [args ...]
+	#
+	# You must run update-initramfs(8) to effect this change.
+	#
+	# Examples:
+	#
+	# raid1
+	# sd_mod
+	ntfs
+	fuse
+	squashfs
+	aufs
+	nls_utf8
+	nls_cp437
+	vfat
+	fat
+	ext4
+	reiserfs
+	ext3
+	loop
+	
+2 - #cria imagem "initrd" conforme parametros acima
+	ver=3.16.0-4-686-pae
+	mkinitramfs -o /tmp/tmp.img /lib/modules/$ver/
+
+3 - #extrai o filesystem
+	mkdir /tmp/k; cd /tmp/k ; 7z x /tmp/tmp.img ; cat tmp |cpio -di --no-absolute-filenames;rm -f tmp
+
+4 - #altera o inicializador
+	cd bin/;ln -s busybox awk;cd ..
+	mkdir proc dev sys
+	mv init init-O
+	cp -pv ~/dev/kernel-solo/init-solo-7.sh .
+	ln -s init-solo-7.sh init
+	chmod +x init-solo-7.sh 
+	chown root:root init-solo-7.sh 
+
+5 - #adicionar comando fsck - /sbin/e2fsck
+	ad=/tmp/lixo.tar.gz
+	rm $ad
+	cmt="/sbin/e2fsck /sbin/losetup-aes-64 /usr/bin/basename"
+	for cm in $cmt; do
+		x=$(ldd $cm | while read ln; do echo $(echo $ln|awk '{print $3}');done)
+		for i in $x;do b=$(readlink -e $i);if [ "$b" != "" ]; then x="$x $b";fi;done
+		xf="$xf $x $cm"
+	done
+	echo $xf
+	tar czvf $ad $xf
+	tar xzvf $ad
+
+6 - #cria nova imagem "initrd"
+	cd /tmp/k
+	aqd=/tmp/initrd.img-solo-$ver
+	rm -f $aqd $aqd.gz
+	find ./ | cpio -H newc -o > $aqd
+	gzip $aqd
+	ls -l $aqd.gz
+	
+7 - kdeb package
+	dt=$(date +"%Y-%m-%d")
+	aq=/tmp/kdeb-$ver-$dt.tar.bz2
+	dr=/tmp/kdeb
+	rm -rfv $dr;mkdir $dr
+	cp -pv /boot/vmlinuz-$ver $dr
+	cp -pv $aqd.gz $dr/
+	cp -rpv /lib/modules/$ver/ $dr
+	cd /tmp
+	rm -f $aq
+	tar cjvf $aq kdeb/
+	ls -tl $aq
+	 
+	

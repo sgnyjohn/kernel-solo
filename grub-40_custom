@@ -1,0 +1,29 @@
+#!/bin/sh
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the 'exec tail' line above.
+
+menuentry 'deb7' {
+  root=(hd0,msdos3)
+  linux /debN/vmlinuz rootLabel=SO1 rootPath=debian7 root=rw,disco.sfs
+  initrd /debN/initrd.gz
+}
+
+menuentry 'salix14 porteus' {
+  root=(hd0,msdos3)
+  linux /kPorteus/vmlinuz changes=/salix14 folder=sda3/salix14 sgnfile=salix14.sfs
+  initrd /kPorteus/initrd.gz	 
+}
+
+menuentry 'arch64-deb' {
+  root=(hd0,msdos3)
+  linux /debN/vmlinuz rootLabel=SO1 rootPath=arch64 root=rw,disco.sfs init=/usr/lib/systemd/systemd
+  initrd /debN/initrd.gz 
+}
+
+menuentry 'porteus' {
+  root=(hd0,msdos3)
+  linux /kPorteus/vmlinuz changes=/kPorteus folder=sda3/kPorteus sgnfile=razor.sgn
+  initrd /kPorteus/initrd.gz	 
+}

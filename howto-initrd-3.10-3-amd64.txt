@@ -1,0 +1,60 @@
+1 - cat /etc/initramfs-tools/modules
+	# List of modules that you want to include in your initramfs.
+	#
+	# Syntax:  module_name [args ...]
+	#
+	# You must run update-initramfs(8) to effect this change.
+	#
+	# Examples:
+	#
+	# raid1
+	# sd_mod
+	ntfs
+	fuse
+	squashfs
+	aufs
+	nls_utf8
+	nls_cp437
+	vfat
+	fat
+	ext4
+	reiserfs
+	ext3
+	loop
+	btrfs
+
+1.2 - compilar modulo crypt loop-AES256? vbox?
+	
+2 - #cria imagem "initrd" conforme parametros acima
+	mkinitramfs -o /tmp/tmp.img /lib/modules/3.10-3-amd64/
+
+3 - #extrai o filesystem
+	mkdir /tmp/k; cd /tmp/k ; 7z x /tmp/tmp.img ; cat tmp |cpio -di --no-absolute-filenames;rm -f tmp
+
+4 - #altera o inicializador
+	mv init init-O
+	cp ~/dev/kernel-solo/init-solo-6 .
+	ln -s init-solo-6 init
+	chmod +x init-solo-6 
+
+5 - #adicionar comando fsck - /sbin/e2fsck
+	ad=/tmp/lixo.tar.gz
+	rm $ad
+	cmt="/sbin/e2fsck /sbin/losetup-aes-64 /usr/bin/basename"
+	for cm in $cmt; do
+		x=$(ldd $cm | while read ln; do echo $(echo $ln|awk '{print $3}');done)
+		for i in $x;do b=$(readlink -e $i);if [ "$b" != "" ]; then x="$x $b";fi;done
+		xf="$xf $x $cm"
+	done
+	echo $xf
+	tar czvf $ad $xf
+	tar xzvf $ad
+
+?5.1 udevd = cd /tmp/k/sbin;ln -s ../lib/systemd/systemd-udevd udevd
+
+6 - #cria nova imagem "initrd"
+	aqd=/tmp/initrd.img-solo-3.10-3-amd64
+	rm -f $aqd
+	find ./ | cpio -H newc -o > $aqd
+	gzip $aqd
+	ls -l $aqd.gz

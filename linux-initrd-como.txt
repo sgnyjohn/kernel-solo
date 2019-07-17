@@ -1,0 +1,53 @@
+#extrair
+7z x /boot/initrdsj.gz 
+cat initrdsj |cpio -di --no-absolute-filenames
+
+
+#copiar /sbin/e2fsck
+	ad=/tmp/lixo.tar.gz
+	rm $ad
+	cm=/sbin/e2fsck
+	x=$(ldd $cm | while read ln; do xx=$(echo $ln|awk '{print $3}');if ! test -e .$xx; then echo $xx;fi;done)
+	echo $x
+	zip $ad $cm $x
+	unzip $ad
+
+
+#montar
+rm /tmp/initrdsj*
+find ./ | cpio -H newc -o > /tmp/initrdsj
+gzip /tmp/initrdsj
+ls -l /tmp/initrdsj.gz
+cp /tmp/initrdsj.gz ../initrdsj5.gz
+
+cp -rpv /tmp/initrdsj.gz /media/ptbanc1/boot
+
+
+=======================================================
+
+
+
+## OS Q nao usam AUFS ou UNIONFS usam: DMSETUP
+
+    echo "0 ${ro_dev_size} snapshot ${ro_dev} ${rw_dev} ${cow_persistent} 8" | dmsetup create ${dm_snap_name}
+    
+    
+Each line of the table specifies a single target and is of the form:
+
+logical_start_sector num_sectors target_type target_args     
+
+
+Examples
+
+# A table to join two disks together
+0 1028160 linear /dev/hda 0
+1028160 3903762 linear /dev/hdb 0
+
+# A table to stripe across the two disks,
+# and add the spare space from
+# hdb to the back of the volume
+
+0 2056320 striped 2 32 /dev/hda 0 /dev/hdb 0
+2056320 2875602 linear /dev/hdb 1028160 
+
+

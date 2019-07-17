@@ -24,6 +24,13 @@
 # faz e2fsck de particoes ext? ...
 
 #######################################
+erro() {
+ xxl="$debugr"
+ debugr=y
+ log "$1" 5
+ debugr="$xxl"
+}
+#######################################
 log() {
  echo "$1"
  if [ $2 ] && [ $debugs ]; then
@@ -67,6 +74,9 @@ montar() {
 	fi
 	Fsck $lb
 	$md "/dev/disk/by-label/${lb}" $2
+	if [ $? -ne 0 ]; then
+		erro "ERRO $md /dev/disk/by-label/${lb} $2"
+	fi
 }
 #######################################
 bb=/bin/busybox
@@ -164,6 +174,7 @@ echo "" > /proc/sys/kernel/hotplug
 ################################################  
 
 modprobe -v ext3
+modprobe -v ext4
 modprobe -v aufs
 modprobe -v loop #debian precisa
 modprobe -v squashfs
@@ -193,8 +204,7 @@ ls $drr/sis
 log "foi...$drr/sis" 3
 rdist="$drr/sis/${rootPath}"
 if ! test -d $rdist ; then
- log "ERRO dir distrib $rdist nao encontrado!" 
- sleep 30
+ erro "ERRO dir distrib $rdist nao encontrado!" 
 fi
 
 #montar outros
@@ -235,10 +245,16 @@ for i in $root; do
   mkDir $d
   if test -b $i; then
 	mount $i $d
+	if [ $? -ne 0 ]; then
+	  erro "ERRO mount $i $d"
+	fi	
   elif test -f $i; then
 	mount -o loop $i $d
+	if [ $? -ne 0 ]; then
+	  erro "ERRO mount -o loop $i $d"
+	fi	
   else
-	log "ERRO não existe $i" 30
+	erro "ERRO não existe $i" 
   fi
  fi
  # primeiro sempre rw, o resto ro
@@ -254,6 +270,8 @@ ls /root
 log "foi...aufs /root" 30
 
 #move tudo para novo ROOT
+# ao shutdown loop nao pode desmontar raiz porque
+# raiz depende de mounts q estao dentro dela...
 mkDir /root/mnt
 mkDir /root/mnt/initrd
 for i in $drr/*; do

@@ -1,0 +1,18 @@
+http://forum.porteus.org/viewtopic.php?f=53&t=572#p12193
+
+since 2.0 rc1 we are using initramfs instead of initrd so all files are packed into CPIO archive.
+
+to unpack:
+
+Code: Select all
+    xz -d < initrd.xz | cpio -i
+
+
+
+to pack everything back:
+
+Code: Select all
+    find | cpio -H newc -o | xz --check=crc32 --x86 --lzma2 > ../initrd.xz
+    
+    
+    

@@ -1,0 +1,11 @@
+Defenda sua liberdade de instalar software livre
+
+Microsoft anunciou que se fabricantes de computadores desejam distribuir máquinas com o símbolo de compatibilidade com o Windows 8, terão que implementar uma medida chamada "Boot Seguro" (Secure Boot). Contudo, ainda se está por saber se esta tecnologia honrará o seu nome, ou se em vez disso merecerá a alcunha de "Boot Restrito".
+
+Quando feito de modo correto, o "Boot Seguro" está projetado como proteção contra malware, impedindo computadores de carregar programas binários não autorizados quando inicia. Na prática, significa que computadores que o implementam não irão iniciar ("bootar") sistemas operacionais não-permitidos -- incluindo sistemas anteriormente autorizados que foram modificados sem ser reaprovados.
+
+Esta pode ser uma qualidade merecedora do nome, se a pessoa usuária é capaz de autorizar os programas que quiser usar, podendo executar software livre escrito e modificado por ela mesma, ou pessoas de sua confiança. Contudo, estamos preocupados de que a Microsoft e fabricantes de hardware implementem essas restrições de inicialização (boot) de um modo que impeça seus usuários de iniciar (boot) qualquer coisa que não seja Windows. Nesse caso, a melhor pedida é chamar essa tecnologia Boot Restrito (ou Inicialização Restrita), já que tal requisito seria uma restrição desastroda para os usuários de computadores e de modo algum um atributo de segurança.
+
+Por favor acrescente o seu nome à seguinte declaração, para mostrar a fabricantes de computadores, governos e à Microsoft que você se importa com a liberdade e trabalhará para protegê-la.
+
+    Nós, abaixo-assinados, insistimos que todos os fabricantes de computadores implementando o chamado "Secure Boot" da UEFI o façam de modo a permitir a instalação sistemas operacionais livres. Para respeitar a liberdade dos usuários e verdadeiramente proteger sua segurança, fabricantes devem quer permitir ao dono desabilitar as restrições de boot inicialização (boot), ou prover um mecanismo garantido que lhes possibilite instalar e executar o sistema operacional livre de sua escolha. Nos comprometemos a não comprar ou recomendar computadores que extirpam dos usuários essa liberdade essencial, e vamos ativamente incitar pessoas em nossas comunidades a evitar sistemas de tal modo restritos.

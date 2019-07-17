@@ -1,0 +1,4 @@
+/scripts/init-premount/amd64_microcode "$@"
+[ -e /conf/param.conf ] && . /conf/param.conf
+/scripts/init-premount/plymouth "$@"
+[ -e /conf/param.conf ] && . /conf/param.conf

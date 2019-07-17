@@ -1,0 +1,33 @@
+1 - cat /etc/initramfs-tools/modules
+	# List of modules that you want to include in your initramfs.
+	#
+	# Syntax:  module_name [args ...]
+	#
+	# You must run update-initramfs(8) to effect this change.
+	#
+	# Examples:
+	#
+	# raid1
+	# sd_mod
+	ntfs
+	fuse
+	squashfs
+	aufs
+	nls_utf8
+	nls_cp437
+	vfat
+	fat
+	ext4
+	reiserfs
+	ext3
+	loop
+
+2 - copiar /sbin/e2fsck
+	ad=/tmp/lixo.tar.gz
+	rm $ad
+	cm=/sbin/e2fsck
+	x=$(ldd $cm | while read ln; do echo $(echo $ln|awk '{print $3}');done)
+	echo $x
+	tar czvf $ad $cm $x
+	tar xzvf $ad
+	
